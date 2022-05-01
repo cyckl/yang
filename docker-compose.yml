@@ -1,0 +1,6 @@
+services:
+  yang:
+    image: ghcr.io/cyckl/yang:latest
+    environment:
+      TOKEN_YANG: TOKEN_SHOULD_GO_HERE_IG
+    restart: unless-stopped
