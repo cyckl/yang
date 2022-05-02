@@ -123,8 +123,7 @@ func single(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-// Implements the multi-message checking by using a global variable to keep
-// track of a User ID which could possibly complete the trigger in two messages
+// Multi-message checking
 // PART ONE - YOUR
 func multiYour(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Ignore bot messages
@@ -168,7 +167,7 @@ func multiMom(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-// Check if given member is a badUser
+// Check if given member is in slice
 func isBad(g string, u string) (res bool) {
 	for _, bad := range bads {
 		if bad.guildID == g && bad.userID == u {
@@ -179,6 +178,7 @@ func isBad(g string, u string) (res bool) {
 	return false
 }
 
+// Get index of a bad user in slice 
 func indexBad(g string, u string) (index int, err error) {
 	for i, bad := range bads {
 		if bad.guildID == g && bad.userID == u {
@@ -191,13 +191,15 @@ func indexBad(g string, u string) (index int, err error) {
 	return 0, errors.New("no bad users")
 }
 
+// Remove a bad user from slice (no longer tracked)
 func removeBad(i int) {
 	bads[i] = bads[len(bads) - 1]
 	bads = bads[:len(bads) - 1]
 }
 
+// Serve punishment
 func timeout(g string, u string) (err error) {
-	// Get time five minutes in future
+	// Get time a minute in future
 	until := time.Now().Add(time.Minute)
 
 	err = s.GuildMemberTimeout(g, u, &until)
