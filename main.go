@@ -113,7 +113,7 @@ func single(s *discordgo.Session, m *discordgo.MessageCreate) {
 	for _, your := range banYour {
 		for _, mom := range banMom {
 			// If message contains any specific permutation, timeout user
-			if strings.Contains(m.Content, strings.ToLower(fmt.Sprintf("%s %s", your, mom))) {
+			if strings.Contains(strings.ToLower(m.Content), fmt.Sprintf("%s %s", your, mom)) {
 				err := timeout(m.GuildID, m.Author.ID)
 				if err != nil {
 					return
@@ -139,7 +139,7 @@ func multiYour(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// If message matches first part, add to watchlist o.o
 	for _, your := range banYour {
-		if m.Content == strings.ToLower(your) {
+		if strings.ToLower(m.Content) == your {
 			fresh := bad{m.GuildID, m.Author.ID}
 			bads = append(bads, fresh)
 		}
@@ -154,7 +154,7 @@ func multiMom(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if isBad(m.GuildID, m.Author.ID) {
 		for _, mom := range banMom {
-			if m.Content == strings.ToLower(mom) {
+			if strings.ToLower(m.Content) == mom {
 				timeout(m.GuildID, m.Author.ID)
 			}
 		}
