@@ -158,12 +158,10 @@ func multiMom(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 		}
 
-		index, err := indexBad(m.GuildID, m.Author.ID)
+		err = removeBad(index)
 		if err != nil {
 			return
 		}
-
-		removeBad(index)
 	}
 }
 
@@ -178,23 +176,17 @@ func isBad(g string, u string) (res bool) {
 	return false
 }
 
-// Get index of a bad user in slice 
-func indexBad(g string, u string) (index int, err error) {
+// Remove a bad user from slice (no longer tracked)
+func removeBad(g string, u string) (err error) {
 	for i, bad := range bads {
 		if bad.guildID == g && bad.userID == u {
-			return i, nil
+			bads[i] = bads[len(bads) - 1]
+			bads = bads[:len(bads) - 1]
+			return nil
 		} else {
-			return -1, errors.New("bad user does not exist in list")
+			return errors.New("bad user not found in list")
 		}
 	}
-
-	return 0, errors.New("no bad users")
-}
-
-// Remove a bad user from slice (no longer tracked)
-func removeBad(i int) {
-	bads[i] = bads[len(bads) - 1]
-	bads = bads[:len(bads) - 1]
 }
 
 // Serve punishment
