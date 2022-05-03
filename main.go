@@ -158,7 +158,7 @@ func multiMom(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 		}
 
-		err = removeBad(index)
+		err := removeBad(m.GuildID, m.Author.ID)
 		if err != nil {
 			return
 		}
@@ -181,12 +181,13 @@ func removeBad(g string, u string) (err error) {
 	for i, bad := range bads {
 		if bad.guildID == g && bad.userID == u {
 			bads[i] = bads[len(bads) - 1]
-			bads = bads[:len(bads) - 1]
-			return nil
+			bads = bads[:len(bads) - 1]	
 		} else {
 			return errors.New("bad user not found in list")
 		}
 	}
+
+	return nil
 }
 
 // Serve punishment
