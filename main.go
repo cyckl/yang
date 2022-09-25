@@ -24,6 +24,7 @@ var (
 		"u're",
 		"u'r",
 		"yo",
+		"thou",
 	}
 	banMom =		[]string{
 		"mom",
@@ -47,6 +48,9 @@ var (
 		"mamma",
 		"madre",
 		"momma",
+		
+		"mawmaw",
+		"maw maw",
 	}
 
 	bads []bad
